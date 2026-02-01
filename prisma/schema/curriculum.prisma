@@ -1,0 +1,26 @@
+model Category {
+  category_id String    @id @default(uuid())
+  name        String    @unique @db.VarChar(250)
+  desc        String?   @db.VarChar(250)
+  img_url     String?   @db.Text
+  created_at  DateTime  @default(now())
+  updated_at  DateTime  @updatedAt
+  subjects    Subject[]
+
+  @@map("categories")
+}
+
+model Subject {
+  subject_id    String         @id @default(uuid())
+  name          String         @unique @db.VarChar(250)
+  dsc           String         @db.Text
+  img_url       String?        @db.Text
+  category_id   String
+  category      Category       @relation(fields: [category_id], references: [category_id])
+  created_at    DateTime       @default(now())
+  updated_at    DateTime       @updatedAt
+  bookings      Booking[]
+  tutorSubjects TutorSubject[]
+
+  @@map("subjects")
+}

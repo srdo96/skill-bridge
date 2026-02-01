@@ -1,0 +1,24 @@
+enum Days {
+  SATURDAY
+  SUNDAY
+  MONDAY
+  TUESDAY
+  WEDNESDAY
+  THURSDAY
+  FRIDAY
+}
+
+model Availability {
+  availability_id  String @id @default(uuid())
+  tutor_profile_id String
+  day_of_week      Days
+  start_time       DateTime @db.Time(0)
+  end_time         DateTime @db.Time(0)
+
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  tutor_profile TutorProfile @relation(fields: [tutor_profile_id], references: [tutor_profile_id], onDelete: Cascade)
+
+  @@map("availability")
+}

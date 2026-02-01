@@ -1,0 +1,17 @@
+model TutorProfile {
+  tutor_profile_id   String   @id @default(uuid())
+  hourly_rate        Decimal  @db.Decimal(10, 2)
+  year_of_experience Int      @default(0)
+  avg_rating         Decimal  @db.Decimal(2, 1)
+  tutor_id           String   @unique
+  created_at         DateTime @default(now())
+  updated_at         DateTime @updatedAt
+
+  tutor          User           @relation(fields: [tutor_id], references: [id])
+  bookings       Booking[]
+  availabilities Availability[]
+  tutorSubjects  TutorSubject[]
+  reviews        Review[]
+
+  @@map("tutor_profiles")
+}

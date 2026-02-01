@@ -1,0 +1,10 @@
+model TutorSubject {
+  tutor_profile_id String
+  subject_id       String
+
+  tutor   TutorProfile @relation(fields: [tutor_profile_id], references: [tutor_profile_id], onDelete: Cascade)
+  subject Subject      @relation(fields: [subject_id], references: [subject_id], onDelete: Cascade)
+
+  @@id([tutor_profile_id, subject_id])
+  @@map("tutor_subjects")
+}
