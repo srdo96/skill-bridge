@@ -17,6 +17,13 @@ declare global {
     }
 }
 
+export type AuthenticatedRequest = Request & {
+    user: NonNullable<Request["user"]>;
+};
+export interface IAuthenticatedRequest extends Request {
+    user: NonNullable<Request["user"]>;
+}
+
 const auth = (...roles: UserRoles[]) => {
     return async (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -35,6 +42,7 @@ const auth = (...roles: UserRoles[]) => {
             //         message: "Your email is not verified yet!",
             //     });
             // }
+            console.log("Hello From AUTH");
             req.user = {
                 id: session.user.id,
                 name: session.user.name,

@@ -2,7 +2,7 @@ model TutorProfile {
   tutor_profile_id   String   @id @default(uuid())
   hourly_rate        Decimal  @db.Decimal(10, 2)
   year_of_experience Int      @default(0)
-  avg_rating         Decimal  @db.Decimal(2, 1)
+  avg_rating         Decimal  @default(0.0) @db.Decimal(2, 1)
   tutor_id           String   @unique
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt

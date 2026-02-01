@@ -9,7 +9,7 @@ enum Days {
 }
 
 model Availability {
-  availability_id  String @id @default(uuid())
+  availability_id  String   @id @default(uuid())
   tutor_profile_id String
   day_of_week      Days
   start_time       DateTime @db.Time(0)
