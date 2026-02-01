@@ -1,0 +1,10 @@
+import type { Request, Response } from "express";
+
+const notFound = (req: Request, res: Response) => {
+    res.status(404).json({
+        message: "The requested resource was not found on this server",
+        status: 404,
+        path: req.originalUrl,
+    });
+};
+export default notFound;
