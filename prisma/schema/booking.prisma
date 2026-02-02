@@ -9,8 +9,11 @@ model Booking {
   student_id       String
   tutor_profile_id String
   subject_id       String
-  start_time       DateTime
-  end_time         DateTime
+  day_of_week      Days
+  start_time       String
+  end_time         String
+  // start_time       DateTime
+  // end_time         DateTime
   status           BookingStatus @default(CONFIRMED)
   price            Decimal       @db.Decimal(7, 2)
   meeting_link     String?       @db.Text
