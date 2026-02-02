@@ -6,4 +6,12 @@ const createTutorSubjects = async (payload: TutorSubject) => {
     return await prisma.tutorSubject.create({ data: payload });
 };
 
-export const tutorSubjectsService = { createTutorSubjects };
+const getTutorSubjects = async (tutorProfileId: string) => {
+    return await prisma.tutorSubject.findMany({
+        where: { tutor_profile_id: tutorProfileId },
+        omit: { subject_id: true },
+        include: { subject: true },
+    });
+};
+
+export const tutorSubjectsService = { createTutorSubjects, getTutorSubjects };

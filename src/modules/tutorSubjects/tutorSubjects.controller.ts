@@ -41,4 +41,32 @@ const createTutorSubjects = async (
     }
 };
 
-export const tutorSubjectsController = { createTutorSubjects };
+const getTutorSubjects = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const userId = req.user.id;
+        const tutorProfile = await prisma.tutorProfile.findUniqueOrThrow({
+            where: { tutor_id: userId },
+            select: { tutor_profile_id: true },
+        });
+        console.log("tutorProfile", tutorProfile);
+        const data = await tutorSubjectsService.getTutorSubjects(
+            tutorProfile.tutor_profile_id,
+        );
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Get tutor subjects successfully",
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+export const tutorSubjectsController = {
+    createTutorSubjects,
+    getTutorSubjects,
+};

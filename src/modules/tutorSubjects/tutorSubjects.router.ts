@@ -11,4 +11,10 @@ router.post(
     tutorSubjectsController.createTutorSubjects as RequestHandler,
 );
 
+router.get(
+    "/",
+    auth(UserRoles.TUTOR),
+    tutorSubjectsController.getTutorSubjects as RequestHandler,
+);
+
 export default router;
