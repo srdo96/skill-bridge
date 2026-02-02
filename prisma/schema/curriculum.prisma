@@ -13,7 +13,7 @@ model Category {
 model Subject {
   subject_id    String         @id @default(uuid())
   name          String         @unique @db.VarChar(250)
-  dsc           String         @db.Text
+  desc           String?        @db.Text
   img_url       String?        @db.Text
   category_id   String
   category      Category       @relation(fields: [category_id], references: [category_id])

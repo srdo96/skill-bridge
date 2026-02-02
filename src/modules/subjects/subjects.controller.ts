@@ -1,18 +1,18 @@
 import type { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../lib/responseHandler";
-import { categoryService } from "./categories.service";
+import { subjectsService } from "./subjects.service";
 
-const createCategory = async (
+const createSubject = async (
     req: Request,
     res: Response,
     next: NextFunction,
 ) => {
     try {
-        const data = await categoryService.createCategory(req.body);
+        const data = await subjectsService.createSubject(req.body);
         return sendResponse(res, {
             statusCode: 201,
             success: true,
-            message: "Category created successfully",
+            message: "Created subject successfully",
             data,
         });
     } catch (error) {
@@ -20,17 +20,17 @@ const createCategory = async (
     }
 };
 
-const getAllCategories = async (
+const getAllSubject = async (
     req: Request,
     res: Response,
     next: NextFunction,
 ) => {
     try {
-        const data = await categoryService.getAllCategories();
+        const data = await subjectsService.getAllSubject();
         return sendResponse(res, {
             statusCode: 200,
             success: true,
-            message: "Fetch categories successfully",
+            message: "Get all subjects successfully",
             data,
         });
     } catch (error) {
@@ -38,4 +38,4 @@ const getAllCategories = async (
     }
 };
 
-export const categoryController = { createCategory, getAllCategories };
+export const subjectsController = { createSubject, getAllSubject };
