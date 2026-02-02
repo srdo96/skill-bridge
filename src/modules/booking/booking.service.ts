@@ -8,4 +8,17 @@ const createBooking = async (payload: Booking) => {
     });
 };
 
-export const bookingService = { createBooking };
+const getBookings = async (userId: string) => {
+    return await prisma.booking.findMany({
+        where: {
+            student_id: userId,
+        },
+        include: {
+            subject: true,
+            tutorProfile: true,
+            student: true,
+        },
+    });
+};
+
+export const bookingService = { createBooking, getBookings };
