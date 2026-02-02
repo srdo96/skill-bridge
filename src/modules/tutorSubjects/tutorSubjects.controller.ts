@@ -52,7 +52,7 @@ const getTutorSubjects = async (
             where: { tutor_id: userId },
             select: { tutor_profile_id: true },
         });
-        console.log("tutorProfile", tutorProfile);
+
         const data = await tutorSubjectsService.getTutorSubjects(
             tutorProfile.tutor_profile_id,
         );

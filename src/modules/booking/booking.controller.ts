@@ -25,4 +25,23 @@ const createBooking = async (
         next(error);
     }
 };
-export const bookingController = { createBooking };
+
+const getBookings = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const userId = req.user.id;
+        const data = await bookingService.getBookings(userId);
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Bookings fetched successfully",
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+export const bookingController = { createBooking, getBookings };
