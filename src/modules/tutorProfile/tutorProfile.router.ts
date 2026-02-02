@@ -10,6 +10,7 @@ router.post(
     auth("TUTOR"),
     tutorProfileController.createTutorProfile as RequestHandler,
 );
+router.get("/", tutorProfileController.getAllTutors);
 
 router.put(
     "/profile",

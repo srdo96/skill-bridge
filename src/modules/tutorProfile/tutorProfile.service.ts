@@ -1,4 +1,5 @@
 import type { TutorProfile } from "../../../generated/prisma/client";
+import type { TutorProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
 const createTutorProfile = async (
@@ -13,6 +14,18 @@ const createTutorProfile = async (
     });
 };
 
+const getAllTutors = async ({ search }: { search: string | undefined }) => {
+    // const andCondition: TutorProfileWhereInput[] = [];
+    // if (search) {
+    //     andCondition.push({
+    //         OR: [{}],
+    //     });
+    // }
+    return await prisma.tutorProfile.findMany({
+        include: { tutor: true, tutorSubjects: true },
+    });
+};
+
 const updateTutorProfile = async (
     payload: Partial<TutorProfile>,
     tutorId: string,
@@ -22,4 +35,8 @@ const updateTutorProfile = async (
     });
 };
 
-export const tutorProfileService = { createTutorProfile, updateTutorProfile };
+export const tutorProfileService = {
+    createTutorProfile,
+    updateTutorProfile,
+    getAllTutors,
+};

@@ -9,7 +9,6 @@ const createTutorProfile = async (
     next: NextFunction,
 ) => {
     try {
-        console.log("HIT");
         const result = await tutorProfileService.createTutorProfile(
             req.body,
             req.user.id,
@@ -19,6 +18,29 @@ const createTutorProfile = async (
             success: true,
             message: "Profile Created Successfully",
             data: result,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+const getAllTutors = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const { search } = req.query;
+        const searchString = typeof search === "string" ? search : undefined;
+
+        const list = await tutorProfileService.getAllTutors({
+            search: searchString,
+        });
+        return sendResponse(res, {
+            success: true,
+            statusCode: 200,
+            data: list,
+            message: "Fetch Successfully",
         });
     } catch (error) {
         next(error);
@@ -35,7 +57,9 @@ const updateTutorProfile = async (
         next(error);
     }
 };
+
 export const tutorProfileController = {
     createTutorProfile,
     updateTutorProfile,
+    getAllTutors,
 };
