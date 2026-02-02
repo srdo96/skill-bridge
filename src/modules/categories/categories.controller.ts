@@ -30,7 +30,7 @@ const getAllCategories = async (
         return sendResponse(res, {
             statusCode: 200,
             success: true,
-            message: "Fetch categories successfully",
+            message: "Get all categories successfully",
             data,
         });
     } catch (error) {

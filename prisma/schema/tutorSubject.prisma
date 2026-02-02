@@ -8,3 +8,4 @@ model TutorSubject {
   @@id([tutor_profile_id, subject_id])
   @@map("tutor_subjects")
 }
+
