@@ -5,7 +5,7 @@ function errorHandler(
     err: any,
     _req: Request,
     res: Response,
-    next: NextFunction,
+    _next: NextFunction,
 ) {
     let statusCode = 500;
     let errorMessage = "Internal Server Error";
@@ -14,8 +14,8 @@ function errorHandler(
         statusCode = 400;
         errorMessage = "You provide incorrect field type or missing fields";
     } else if (err instanceof Prisma.PrismaClientKnownRequestError) {
-        if (err.code === "p2025") {
-            statusCode = 400;
+        if (err.code === "P2025") {
+            statusCode = 404;
             errorMessage = "Requested record not found";
         } else if (err.code === "P2003") {
             statusCode = 400;
@@ -26,7 +26,7 @@ function errorHandler(
         errorMessage = "An unknown database error occurred.";
     }
     res.status(statusCode);
-    res.json({ message: errorMessage, error: err });
+    res.json({ success: false, message: errorMessage, error: err });
 }
 
 export default errorHandler;

@@ -1,5 +1,4 @@
 import type { TutorProfile } from "../../../generated/prisma/client";
-import type { TutorProfileWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
 const createTutorProfile = async (
@@ -26,6 +25,18 @@ const getAllTutors = async ({ search }: { search: string | undefined }) => {
     });
 };
 
+const getTutorDetails = async (tutor_id: string) => {
+    return await prisma.tutorProfile.findUniqueOrThrow({
+        where: { tutor_id },
+        include: {
+            tutor: true,
+            reviews: true,
+            tutorSubjects: true,
+            availabilities: true,
+        },
+    });
+};
+
 const updateTutorProfile = async (
     payload: Partial<TutorProfile>,
     tutorId: string,
@@ -39,4 +50,5 @@ export const tutorProfileService = {
     createTutorProfile,
     updateTutorProfile,
     getAllTutors,
+    getTutorDetails,
 };

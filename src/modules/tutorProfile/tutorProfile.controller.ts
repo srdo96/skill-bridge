@@ -47,6 +47,29 @@ const getAllTutors = async (
     }
 };
 
+const getTutorDetails = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const { tutorId } = req.params;
+        if (!tutorId) throw new Error("Tutor Id Required!");
+        if (Array.isArray(tutorId)) throw new Error("Id Formant not valid");
+
+        const data = await tutorProfileService.getTutorDetails(tutorId);
+
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            data,
+            message: "Tutor details fetched successfully",
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const updateTutorProfile = async (
     req: Request,
     res: Response,
@@ -62,4 +85,5 @@ export const tutorProfileController = {
     createTutorProfile,
     updateTutorProfile,
     getAllTutors,
+    getTutorDetails,
 };
