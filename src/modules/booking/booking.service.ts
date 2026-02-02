@@ -13,6 +13,7 @@ const getBookings = async (userId: string) => {
         where: {
             student_id: userId,
         },
+        omit: { subject_id: true, tutor_profile_id: true, student_id: true },
         include: {
             subject: true,
             tutorProfile: true,

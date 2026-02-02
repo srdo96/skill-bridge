@@ -10,4 +10,9 @@ router.post(
     bookingController.createBooking as RequestHandler,
 );
 
+router.get(
+    "/",
+    auth(UserRoles.STUDENT),
+    bookingController.getBookings as RequestHandler,
+);
 export default router;
