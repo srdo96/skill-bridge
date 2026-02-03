@@ -17,6 +17,11 @@ function errorHandler(
         if (err.code === "P2025") {
             statusCode = 404;
             errorMessage = "Requested record not found";
+        } else if (err.code === "P2002") {
+            statusCode = 409;
+            errorMessage =
+                (err.meta?.driverAdapterError as any)?.cause?.originalMessage ||
+                "Duplicate value violates unique constraint";
         } else if (err.code === "P2003") {
             statusCode = 400;
             errorMessage = "Foreign key constraint failed";
