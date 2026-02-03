@@ -22,4 +22,20 @@ const getBookings = async (userId: string) => {
     });
 };
 
-export const bookingService = { createBooking, getBookings };
+const getBookingDetails = async (bookingId: string) => {
+    return await prisma.booking.findUniqueOrThrow({
+        where: { booking_id: bookingId },
+        include: {
+            tutorProfile: {
+                include: {
+                    tutor: true,
+                },
+            },
+            subject: true,
+            student: true,
+            reviews: true,
+        },
+    });
+};
+
+export const bookingService = { createBooking, getBookings, getBookingDetails };
