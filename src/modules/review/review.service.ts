@@ -11,10 +11,14 @@ const createReview = async (payload: Review) => {
     });
 };
 
+const getAllReviews = async () => {
+    return await prisma.review.findMany();
+};
+
 const getReviewDetails = async (reviewId: string) => {
     return await prisma.review.findUniqueOrThrow({
         where: { review_id: reviewId },
     });
 };
 
-export const reviewService = { createReview, getReviewDetails };
+export const reviewService = { createReview, getReviewDetails, getAllReviews };

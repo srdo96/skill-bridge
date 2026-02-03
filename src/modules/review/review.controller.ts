@@ -23,6 +23,24 @@ const createReview = async (
     }
 };
 
+const getAllReviews = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const data = await reviewService.getAllReviews();
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Get All Reviews Successfully",
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const getReviewsDetails = async (
     req: Request,
     res: Response,
@@ -45,4 +63,8 @@ const getReviewsDetails = async (
     }
 };
 
-export const reviewController = { createReview, getReviewsDetails };
+export const reviewController = {
+    createReview,
+    getReviewsDetails,
+    getAllReviews,
+};
