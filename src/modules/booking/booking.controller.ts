@@ -44,4 +44,31 @@ const getBookings = async (
         next(error);
     }
 };
-export const bookingController = { createBooking, getBookings };
+
+const getBookingDetails = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const { bookingId } = req.params;
+        if (!bookingId) throw new Error("Booking Id Required!");
+        if (Array.isArray(bookingId)) throw new Error("Id Formant not valid");
+
+        const data = bookingService.getBookingDetails(bookingId);
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Get Booking details successfully",
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const bookingController = {
+    createBooking,
+    getBookings,
+    getBookingDetails,
+};
