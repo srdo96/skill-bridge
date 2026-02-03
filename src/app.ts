@@ -1,6 +1,7 @@
 import { toNodeHandler } from "better-auth/node";
 import cors from "cors";
 import express, { type Application, type Response } from "express";
+import { env } from "./env";
 import { auth } from "./lib/auth";
 import errorHandler from "./middlewares/globalErrorHandler";
 import notFound from "./middlewares/notFound";
@@ -9,7 +10,7 @@ const app: Application = express();
 
 app.use(
     cors({
-        origin: "http://localhost:3000",
+        origin: env.corsOrigin || "http://localhost:3000",
         credentials: true,
     }),
 );

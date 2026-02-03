@@ -6,6 +6,7 @@ const envSchema = z.object({
     DATABASE_URL: z.url(),
     BETTER_AUTH_SECRET: z.string(),
     BETTER_AUTH_URL: z.string(),
+    CORS_ORIGIN: z.string(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
@@ -21,4 +22,5 @@ export const env = {
     dbUrl: parsedEnv.data.DATABASE_URL,
     betterAuthSecret: parsedEnv.data.BETTER_AUTH_SECRET,
     betterAuthUrl: parsedEnv.data.BETTER_AUTH_URL,
+    corsOrigin: parsedEnv.data.CORS_ORIGIN,
 };
