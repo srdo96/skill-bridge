@@ -1,4 +1,4 @@
-import type { Booking } from "../../../generated/prisma/client";
+import { BookingStatus, type Booking } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const createBooking = async (payload: Booking) => {
@@ -39,4 +39,16 @@ const getBookingDetails = async (bookingId: string) => {
     });
 };
 
-export const bookingService = { createBooking, getBookings, getBookingDetails };
+const cancelBooking = async (bookingId: string) => {
+    return await prisma.booking.update({
+        where: { booking_id: bookingId },
+        data: { status: BookingStatus.CANCELLED },
+    });
+};
+
+export const bookingService = {
+    createBooking,
+    getBookings,
+    getBookingDetails,
+    cancelBooking,
+};

@@ -16,6 +16,12 @@ router.get(
     bookingController.getBookings as RequestHandler,
 );
 
+router.patch(
+    "/:bookingId/cancel",
+    auth(UserRoles.STUDENT),
+    bookingController.cancelBooking,
+);
+
 router.get(
     "/:bookingId",
     auth(UserRoles.STUDENT, UserRoles.TUTOR),
