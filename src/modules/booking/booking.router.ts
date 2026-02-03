@@ -15,4 +15,11 @@ router.get(
     auth(UserRoles.STUDENT),
     bookingController.getBookings as RequestHandler,
 );
+
+router.get(
+    "/:bookingId",
+    auth(UserRoles.STUDENT, UserRoles.TUTOR),
+    bookingController.getBookingDetails,
+);
+
 export default router;

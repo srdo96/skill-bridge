@@ -1,4 +1,4 @@
-import type { NextFunction, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../lib/responseHandler";
 import type { AuthenticatedRequest } from "../../middlewares/auth";
 import { bookingService } from "./booking.service";
@@ -46,7 +46,7 @@ const getBookings = async (
 };
 
 const getBookingDetails = async (
-    req: AuthenticatedRequest,
+    req: Request,
     res: Response,
     next: NextFunction,
 ) => {
@@ -55,7 +55,7 @@ const getBookingDetails = async (
         if (!bookingId) throw new Error("Booking Id Required!");
         if (Array.isArray(bookingId)) throw new Error("Id Formant not valid");
 
-        const data = bookingService.getBookingDetails(bookingId);
+        const data = await bookingService.getBookingDetails(bookingId);
         return sendResponse(res, {
             statusCode: 200,
             success: true,

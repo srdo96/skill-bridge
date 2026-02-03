@@ -23,6 +23,7 @@ const getBookings = async (userId: string) => {
 };
 
 const getBookingDetails = async (bookingId: string) => {
+    console.log(bookingId);
     return await prisma.booking.findUniqueOrThrow({
         where: { booking_id: bookingId },
         include: {
