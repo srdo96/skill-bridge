@@ -13,7 +13,7 @@ const createReview = async (
 
         const data = await reviewService.createReview(body);
         return sendResponse(res, {
-            statusCode: 200,
+            statusCode: 201,
             success: true,
             message: "Create Review Successfully",
             data,
@@ -23,4 +23,26 @@ const createReview = async (
     }
 };
 
-export const reviewController = { createReview };
+const getReviewsDetails = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const { reviewId } = req.params;
+        if (!reviewId) throw new Error("Review Id Required!");
+        if (Array.isArray(reviewId)) throw new Error("Id Formant not valid");
+
+        const data = await reviewService.getReviewDetails(reviewId);
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Get Reviews Details Successfully",
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const reviewController = { createReview, getReviewsDetails };

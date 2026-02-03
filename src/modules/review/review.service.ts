@@ -5,4 +5,10 @@ const createReview = async (payload: Review) => {
     return await prisma.review.create({ data: payload });
 };
 
-export const reviewService = { createReview };
+const getReviewDetails = async (reviewId: string) => {
+    return await prisma.review.findUniqueOrThrow({
+        where: { review_id: reviewId },
+    });
+};
+
+export const reviewService = { createReview, getReviewDetails };
