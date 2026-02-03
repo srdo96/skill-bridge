@@ -5,6 +5,7 @@ import tutorProfileRoutes from "../modules/tutorProfile/tutorProfile.router";
 import availabilityRoutes from "../modules/availability/availability.router";
 import tutorSubjectsRoutes from "../modules/tutorSubjects/tutorSubjects.router";
 import bookingRoutes from "../modules/booking/booking.router";
+import reviewRoutes from "../modules/review/review.router";
 
 const router: ExpressRouter = Router();
 
@@ -14,4 +15,5 @@ router.use("/subjects", subjectsRouters);
 router.use("/availability", availabilityRoutes);
 router.use("/tutor-subjects", tutorSubjectsRoutes);
 router.use("/bookings", bookingRoutes);
+router.use("/reviews", reviewRoutes);
 export default router;

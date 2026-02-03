@@ -8,7 +8,10 @@ const createReview = async (
     next: NextFunction,
 ) => {
     try {
-        const data = await reviewService.createReview(req.body);
+        const userId = req.user?.id;
+        const body = { ...req.body, student_id: userId };
+
+        const data = await reviewService.createReview(body);
         return sendResponse(res, {
             statusCode: 200,
             success: true,
