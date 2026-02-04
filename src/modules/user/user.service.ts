@@ -12,6 +12,16 @@ const getAllUsers = async () => {
             status: true,
             createdAt: true,
             updatedAt: true,
+            tutorProfiles: {
+                select: {
+                    tutor_profile_id: true,
+                    hourly_rate: true,
+                    year_of_experience: true,
+                    avg_rating: true,
+                    created_at: true,
+                    updated_at: true,
+                },
+            },
         },
     });
 };
