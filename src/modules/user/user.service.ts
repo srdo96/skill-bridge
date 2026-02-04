@@ -29,7 +29,16 @@ const getAllUsers = async () => {
 const getUserDetails = async (userId: string) => {
     return await prisma.user.findUniqueOrThrow({
         where: { id: userId },
-        include: { tutorProfiles: true },
+        include: {
+            tutorProfiles: {
+                include: {
+                    availabilities: true,
+                    tutorSubjects: { include: { subject: true } },
+                    reviews: true,
+                    bookings: true,
+                },
+            },
+        },
     });
 };
 
