@@ -26,6 +26,22 @@ const getAllUsers = async () => {
     });
 };
 
+const getUserDetails = async (userId: string) => {
+    return await prisma.user.findUniqueOrThrow({
+        where: { id: userId },
+        include: { tutorProfiles: true },
+    });
+};
+
+const banUser = async (userId: string) => {
+    return await prisma.user.update({
+        where: { id: userId },
+        data: { status: "BAN" },
+    });
+};
+
 export const userService = {
     getAllUsers,
+    getUserDetails,
+    banUser,
 };
