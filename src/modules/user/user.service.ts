@@ -23,6 +23,7 @@ const getAllUsers = async () => {
                 },
             },
         },
+        orderBy: { name: "asc" },
     });
 };
 
