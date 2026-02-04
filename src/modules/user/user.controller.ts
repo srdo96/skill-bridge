@@ -65,5 +65,32 @@ const banUser = async (req: Request, res: Response, next: NextFunction) => {
         next(error);
     }
 };
+const unbanUser = async (req: Request, res: Response, next: NextFunction) => {
+    try {
+        const { userId } = req.params;
+        if (!userId) {
+            return sendResponse(res, {
+                statusCode: 400,
+                success: false,
+                message: "User ID is required",
+            });
+        }
+        if (Array.isArray(userId)) throw new Error("Id Formant not valid");
+        const data = await userService.unbanUser(userId);
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: `User ${data.name} unbanned successfully`,
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 
-export const userController = { getAllUsers, getUserDetails, banUser };
+export const userController = {
+    getAllUsers,
+    getUserDetails,
+    banUser,
+    unbanUser,
+};

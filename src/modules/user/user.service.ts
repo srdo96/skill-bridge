@@ -39,9 +39,16 @@ const banUser = async (userId: string) => {
         data: { status: "BAN" },
     });
 };
+const unbanUser = async (userId: string) => {
+    return await prisma.user.update({
+        where: { id: userId },
+        data: { status: "ACTIVE" },
+    });
+};
 
 export const userService = {
     getAllUsers,
     getUserDetails,
     banUser,
+    unbanUser,
 };
