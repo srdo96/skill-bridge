@@ -39,10 +39,11 @@ const getTutorDetails = async (tutor_id: string) => {
 
 const updateTutorProfile = async (
     payload: Partial<TutorProfile>,
-    tutorId: string,
+    tutorProfileId: string,
 ) => {
-    const profileData = await prisma.tutorProfile.create({
-        data: { ...payload, tutor_id: tutorId, hourly_rate: 1, avg_rating: 1 },
+    return await prisma.tutorProfile.update({
+        where: { tutor_profile_id: tutorProfileId },
+        data: payload,
     });
 };
 

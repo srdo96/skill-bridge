@@ -20,6 +20,12 @@ router.get("/", tutorProfileController.getAllTutors as RequestHandler);
 
 router.get("/:tutorId", tutorProfileController.getTutorDetails);
 
+router.patch(
+    "/profile/:tutorProfileId",
+    auth(UserRoles.ADMIN, UserRoles.TUTOR),
+    tutorProfileController.updateTutorProfile,
+);
+
 router.put(
     "/profile",
     auth(UserRoles.ADMIN, UserRoles.TUTOR),

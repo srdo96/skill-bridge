@@ -94,6 +94,22 @@ const updateTutorProfile = async (
     next: NextFunction,
 ) => {
     try {
+        const { tutorProfileId } = req.params;
+        console.log("tutorProfileId", tutorProfileId);
+        if (!tutorProfileId) throw new Error("Tutor Profile Id Required!");
+        if (Array.isArray(tutorProfileId))
+            throw new Error("Profile Id Formant not valid");
+        console.log("req.body", req.body);
+        const data = await tutorProfileService.updateTutorProfile(
+            req.body,
+            tutorProfileId,
+        );
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            data,
+            message: "Tutor profile updated successfully",
+        });
     } catch (error) {
         next(error);
     }
