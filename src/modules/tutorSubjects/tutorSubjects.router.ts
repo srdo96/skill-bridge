@@ -17,4 +17,10 @@ router.get(
     tutorSubjectsController.getTutorSubjects as RequestHandler,
 );
 
+router.delete(
+    "/:subjectId",
+    auth(UserRoles.TUTOR),
+    tutorSubjectsController.deleteTutorSubjectBySubjectId as RequestHandler,
+);
+
 export default router;

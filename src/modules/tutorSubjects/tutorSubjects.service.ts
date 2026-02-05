@@ -14,4 +14,21 @@ const getTutorSubjects = async (tutorProfileId: string) => {
     });
 };
 
-export const tutorSubjectsService = { createTutorSubjects, getTutorSubjects };
+const deleteTutorSubjectBySubjectId = async (
+    tutorProfileId: string,
+    subjectId: string,
+) => {
+    return await prisma.tutorSubject.delete({
+        where: {
+            tutor_profile_id_subject_id: {
+                tutor_profile_id: tutorProfileId,
+                subject_id: subjectId,
+            },
+        },
+    });
+};
+export const tutorSubjectsService = {
+    createTutorSubjects,
+    getTutorSubjects,
+    deleteTutorSubjectBySubjectId,
+};

@@ -1,6 +1,7 @@
 import type { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../lib/responseHandler";
 import type { AuthenticatedRequest } from "../../middlewares/auth";
+import { userService } from "../user/user.service";
 import { tutorProfileService } from "./tutorProfile.service";
 
 const createTutorProfile = async (
@@ -70,6 +71,23 @@ const getTutorDetails = async (
     }
 };
 
+const getMyProfile = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const data = await userService.getUserDetails(req.user.id);
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            data,
+            message: "My profile fetched successfully",
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 const updateTutorProfile = async (
     req: Request,
     res: Response,
@@ -86,4 +104,5 @@ export const tutorProfileController = {
     updateTutorProfile,
     getAllTutors,
     getTutorDetails,
+    getMyProfile,
 };

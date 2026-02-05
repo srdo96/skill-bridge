@@ -7,10 +7,16 @@ const router: Router = express.Router();
 
 router.post(
     "/profile",
-    auth("TUTOR"),
+    auth(UserRoles.TUTOR),
     tutorProfileController.createTutorProfile as RequestHandler,
 );
-router.get("/", tutorProfileController.getAllTutors);
+
+router.get(
+    "/my-profile",
+    auth(UserRoles.TUTOR),
+    tutorProfileController.getMyProfile as RequestHandler,
+);
+router.get("/", tutorProfileController.getAllTutors as RequestHandler);
 
 router.get("/:tutorId", tutorProfileController.getTutorDetails);
 

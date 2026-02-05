@@ -66,7 +66,40 @@ const getTutorSubjects = async (
         next(error);
     }
 };
+
+const deleteTutorSubjectBySubjectId = async (
+    req: AuthenticatedRequest,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const userId = req.user.id;
+        const tutorProfile = await prisma.tutorProfile.findUniqueOrThrow({
+            where: { tutor_id: userId },
+            select: { tutor_profile_id: true },
+        });
+
+        const data = await tutorSubjectsService.deleteTutorSubjectBySubjectId(
+            tutorProfile.tutor_profile_id,
+            req.params.subjectId as string,
+        );
+
+        if (!data) {
+            return sendResponse(res, {
+                statusCode: 404,
+                success: false,
+                message: "Tutor subject not found",
+            });
+        }
+
+        return res.status(204).end();
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const tutorSubjectsController = {
     createTutorSubjects,
     getTutorSubjects,
+    deleteTutorSubjectBySubjectId,
 };
