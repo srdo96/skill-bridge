@@ -15,7 +15,7 @@ router.use("/users", userRoutes);
 router.use("/tutors", tutorProfileRoutes);
 router.use("/categories", categoriesRouters);
 router.use("/subjects", subjectsRouters);
-router.use("/availability", availabilityRoutes);
+router.use("/availabilities", availabilityRoutes);
 router.use("/tutor-subjects", tutorSubjectsRoutes);
 router.use("/bookings", bookingRoutes);
 router.use("/reviews", reviewRoutes);

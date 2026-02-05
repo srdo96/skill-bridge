@@ -1,4 +1,4 @@
-import type { NextFunction, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import type { Availability } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 import { sendResponse } from "../../lib/responseHandler";
@@ -40,4 +40,22 @@ const createAvailability = async (
     }
 };
 
-export const availabilityController = { createAvailability };
+const deleteAvailabilityById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        await availabilityService.deleteAvailabilityById(
+            req.params.availabilityId as string,
+        );
+        return res.status(204).send();
+    } catch (error) {
+        next(error);
+    }
+};
+
+export const availabilityController = {
+    createAvailability,
+    deleteAvailabilityById,
+};

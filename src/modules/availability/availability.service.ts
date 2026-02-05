@@ -10,4 +10,14 @@ const getAllAvailability = async () => {
     return await prisma.availability.findMany();
 };
 
-export const availabilityService = { createAvailability, getAllAvailability };
+const deleteAvailabilityById = async (availabilityId: string) => {
+    return await prisma.availability.delete({
+        where: { availability_id: availabilityId },
+    });
+};
+
+export const availabilityService = {
+    createAvailability,
+    getAllAvailability,
+    deleteAvailabilityById,
+};

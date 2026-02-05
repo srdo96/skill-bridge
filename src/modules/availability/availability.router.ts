@@ -10,4 +10,10 @@ router.post(
     availabilityController.createAvailability as RequestHandler,
 );
 
+router.delete(
+    "/:availabilityId",
+    auth(UserRoles.TUTOR),
+    availabilityController.deleteAvailabilityById,
+);
+
 export default router;
