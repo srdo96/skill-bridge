@@ -26,14 +26,14 @@ const createBooking = async (
     }
 };
 
-const getBookings = async (
+const getBookingsByUserId = async (
     req: AuthenticatedRequest,
     res: Response,
     next: NextFunction,
 ) => {
     try {
         const userId = req.user.id;
-        const data = await bookingService.getBookings(userId);
+        const data = await bookingService.getBookingsByUserId(userId);
         return sendResponse(res, {
             statusCode: 200,
             success: true,
@@ -67,6 +67,24 @@ const getBookingDetails = async (
     }
 };
 
+const getAllBookings = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const data = await bookingService.getAllBookings();
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "All bookings fetched successfully",
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 const cancelBooking = async (
     req: Request,
     res: Response,
@@ -91,7 +109,8 @@ const cancelBooking = async (
 
 export const bookingController = {
     createBooking,
-    getBookings,
+    getBookingsByUserId,
+    getAllBookings,
     getBookingDetails,
     cancelBooking,
 };

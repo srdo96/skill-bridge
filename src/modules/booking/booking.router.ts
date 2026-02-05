@@ -13,7 +13,7 @@ router.post(
 router.get(
     "/",
     auth(UserRoles.STUDENT, UserRoles.ADMIN),
-    bookingController.getBookings as RequestHandler,
+    bookingController.getAllBookings as RequestHandler,
 );
 
 router.patch(

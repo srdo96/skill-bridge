@@ -8,12 +8,25 @@ const createBooking = async (payload: Booking) => {
     });
 };
 
-const getBookings = async (userId: string) => {
+const getBookingsByUserId = async (userId: string) => {
     return await prisma.booking.findMany({
         where: {
-            student_id: userId,
+            OR: [
+                { student_id: userId },
+                { tutorProfile: { tutor_id: userId } },
+            ],
         },
         omit: { subject_id: true, tutor_profile_id: true, student_id: true },
+        include: {
+            subject: true,
+            tutorProfile: true,
+            student: true,
+        },
+    });
+};
+
+const getAllBookings = async () => {
+    return await prisma.booking.findMany({
         include: {
             subject: true,
             tutorProfile: true,
@@ -48,7 +61,8 @@ const cancelBooking = async (bookingId: string) => {
 
 export const bookingService = {
     createBooking,
-    getBookings,
+    getBookingsByUserId,
+    getAllBookings,
     getBookingDetails,
     cancelBooking,
 };
