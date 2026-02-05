@@ -9,4 +9,9 @@ router.get("/", auth(UserRoles.ADMIN), userController.getAllUsers);
 router.get("/:userId", auth(UserRoles.ADMIN), userController.getUserDetails);
 router.patch("/:userId/ban", auth(UserRoles.ADMIN), userController.banUser);
 router.patch("/:userId/unban", auth(UserRoles.ADMIN), userController.unbanUser);
+router.patch(
+    "/:userId",
+    auth(UserRoles.ADMIN, UserRoles.TUTOR, UserRoles.STUDENT),
+    userController.updateUserById,
+);
 export default router;

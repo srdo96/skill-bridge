@@ -88,9 +88,31 @@ const unbanUser = async (req: Request, res: Response, next: NextFunction) => {
     }
 };
 
+const updateUserById = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const { userId } = req.params;
+        if (!userId) throw new Error("User ID Required!");
+        if (Array.isArray(userId)) throw new Error("Id Formant not valid");
+        const data = await userService.updateUserById(userId, req.body);
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: `User ${data.name} updated successfully`,
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
+
 export const userController = {
     getAllUsers,
     getUserDetails,
     banUser,
     unbanUser,
+    updateUserById,
 };

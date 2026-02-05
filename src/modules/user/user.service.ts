@@ -1,3 +1,4 @@
+import type { User } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const getAllUsers = async () => {
@@ -56,9 +57,17 @@ const unbanUser = async (userId: string) => {
     });
 };
 
+const updateUserById = async (userId: string, payload: Partial<User>) => {
+    return await prisma.user.update({
+        where: { id: userId },
+        data: payload,
+    });
+};
+
 export const userService = {
     getAllUsers,
     getUserDetails,
     banUser,
     unbanUser,
+    updateUserById,
 };
