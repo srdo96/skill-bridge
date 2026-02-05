@@ -12,7 +12,7 @@ router.post(
 
 router.get(
     "/",
-    auth(UserRoles.STUDENT, UserRoles.ADMIN),
+    auth(UserRoles.STUDENT, UserRoles.ADMIN, UserRoles.TUTOR),
     bookingController.getAllBookings as RequestHandler,
 );
 
