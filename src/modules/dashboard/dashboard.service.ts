@@ -139,8 +139,27 @@ const getStudentStats = async (studentId: string) => {
     };
 };
 
+const getLandingPageStats = async () => {
+    const [totalTutors, totalStudents, totalSessionsCompleted, totalSubjects] =
+        await Promise.all([
+            prisma.user.count({ where: { role: "TUTOR", status: "ACTIVE" } }),
+            prisma.user.count({ where: { role: "STUDENT" } }),
+            prisma.booking.count({
+                where: { status: BookingStatus.COMPLETED },
+            }),
+            prisma.subject.count(),
+        ]);
+    return {
+        totalTutors,
+        totalStudents,
+        totalSessionsCompleted,
+        totalSubjects,
+    };
+};
+
 export const dashboardService = {
     getAdminStats,
     getTutorStats,
     getStudentStats,
+    getLandingPageStats,
 };

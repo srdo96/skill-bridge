@@ -11,4 +11,6 @@ router.get(
     dashboardController.getStats as RequestHandler,
 );
 
+router.get("/landing-page-stats", dashboardController.getLandingPageStats);
+
 export default router;

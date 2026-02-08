@@ -1,4 +1,4 @@
-import type { NextFunction, Response } from "express";
+import type { NextFunction, Request, Response } from "express";
 import { UserRoles } from "../../../generated/prisma/client";
 import { sendResponse } from "../../lib/responseHandler";
 import type { AuthenticatedRequest } from "../../middlewares/auth";
@@ -43,6 +43,24 @@ const getStats = async (
     }
 };
 
+const getLandingPageStats = async (
+    req: Request,
+    res: Response,
+    next: NextFunction,
+) => {
+    try {
+        const data = await dashboardService.getLandingPageStats();
+        return sendResponse(res, {
+            statusCode: 200,
+            success: true,
+            message: "Landing page statistics fetched successfully",
+            data,
+        });
+    } catch (error) {
+        next(error);
+    }
+};
 export const dashboardController = {
     getStats,
+    getLandingPageStats,
 };
