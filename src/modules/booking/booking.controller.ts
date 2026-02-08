@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { randomUUID } from "node:crypto";
+import { UserRoles } from "../../../generated/prisma/enums";
 import { sendResponse } from "../../lib/responseHandler";
 import type { AuthenticatedRequest } from "../../middlewares/auth";
 import { bookingService } from "./booking.service";
@@ -79,7 +80,10 @@ const getAllBookings = async (
     next: NextFunction,
 ) => {
     try {
-        const userId = req.user.id;
+        let userId = undefined;
+        if (req.user.role === UserRoles.TUTOR) {
+            userId = req.user.id;
+        }
         const data = await bookingService.getAllBookings(userId);
         return sendResponse(res, {
             statusCode: 200,

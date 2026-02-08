@@ -76,6 +76,7 @@ const getAllUsers = async ({
                     avg_rating: true,
                     created_at: true,
                     updated_at: true,
+                    is_featured: true,
                     tutorSubjects: { include: { subject: true } },
                     availabilities: true,
                 },

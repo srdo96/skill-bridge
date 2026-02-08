@@ -24,12 +24,13 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
             sortBy,
             tutorProfiles,
         });
+        console.log("datas", data);
 
         return sendResponse(res, {
             statusCode: 200,
             success: true,
             message: "Get all users successfully",
-            data,
+            data: data.data,
             meta: data.meta,
         });
     } catch (error) {
