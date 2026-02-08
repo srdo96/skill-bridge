@@ -2,6 +2,7 @@ import { BookingStatus, type Review } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const createReview = async (payload: Review) => {
+    console.log(payload, "payload");
     return await prisma.$transaction(async (tx) => {
         await tx.booking.update({
             where: { booking_id: payload.booking_id },

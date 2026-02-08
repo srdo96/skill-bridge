@@ -40,8 +40,14 @@ const getBookingsByUserId = async (userId: string) => {
     });
 };
 
-const getAllBookings = async () => {
+const getAllBookings = async (userId?: string) => {
+    const where = userId
+        ? {
+              OR: [{ student_id: userId }, { tutor_profile_id: userId }],
+          }
+        : undefined;
     return await prisma.booking.findMany({
+        ...(where ? { where } : {}),
         include: {
             subject: true,
             tutorProfile: true,

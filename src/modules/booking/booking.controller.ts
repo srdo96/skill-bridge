@@ -74,12 +74,13 @@ const getBookingDetails = async (
 };
 
 const getAllBookings = async (
-    req: Request,
+    req: AuthenticatedRequest,
     res: Response,
     next: NextFunction,
 ) => {
     try {
-        const data = await bookingService.getAllBookings();
+        const userId = req.user.id;
+        const data = await bookingService.getAllBookings(userId);
         return sendResponse(res, {
             statusCode: 200,
             success: true,
