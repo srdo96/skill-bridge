@@ -4,6 +4,7 @@ model TutorProfile {
   year_of_experience Int      @default(0)
   avg_rating         Decimal  @default(0.0) @db.Decimal(2, 1)
   tutor_id           String   @unique
+  is_featured        Boolean  @default(false)
   created_at         DateTime @default(now())
   updated_at         DateTime @updatedAt
 
