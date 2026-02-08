@@ -1,4 +1,5 @@
 import type { NextFunction, Request, Response } from "express";
+import { randomUUID } from "node:crypto";
 import { sendResponse } from "../../lib/responseHandler";
 import type { AuthenticatedRequest } from "../../middlewares/auth";
 import { bookingService } from "./booking.service";
@@ -10,11 +11,16 @@ const createBooking = async (
 ) => {
     try {
         const userId = req.user.id;
+        const uuid = randomUUID();
+
         const bookingData = {
             ...req.body,
             student_id: userId,
+            meeting_link: `https://sb.com/${uuid}&${userId}`,
         };
+
         const data = await bookingService.createBooking(bookingData);
+
         return sendResponse(res, {
             statusCode: 201,
             success: true,

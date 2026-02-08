@@ -79,7 +79,6 @@ const getTutorStats = async (tutorId: string) => {
                 _avg: { rating: true },
             }),
         ]);
-
     return {
         bookings: {
             total: bookings,

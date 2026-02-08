@@ -1,8 +1,63 @@
-import type { User } from "../../../generated/prisma/client";
+import type {
+    User,
+    UserRoles,
+    UserStatus,
+} from "../../../generated/prisma/client";
+import type { UserWhereInput } from "../../../generated/prisma/models";
 import { prisma } from "../../lib/prisma";
 
-const getAllUsers = async () => {
-    return await prisma.user.findMany({
+const getAllUsers = async ({
+    search,
+    status,
+    role,
+    page,
+    limit,
+    skip,
+    sortOrder,
+    sortBy,
+    tutorProfiles,
+}: {
+    search: string | undefined;
+    status: string | undefined;
+    role: string | undefined;
+    page: number;
+    limit: number;
+    skip: number;
+    sortOrder: string;
+    sortBy: string;
+    tutorProfiles: string | undefined;
+}) => {
+    const andCondition: UserWhereInput[] = [];
+    if (search) {
+        andCondition.push({
+            OR: [
+                { name: { contains: search, mode: "insensitive" } },
+                { email: { contains: search, mode: "insensitive" } },
+            ],
+        });
+    }
+    if (tutorProfiles) {
+        andCondition.push({
+            tutorProfiles: { isNot: null },
+        });
+    }
+    if (role) {
+        andCondition.push({
+            role: role as UserRoles,
+        });
+    }
+    if (status) {
+        andCondition.push({
+            status: status as UserStatus,
+        });
+    }
+
+    const result = await prisma.user.findMany({
+        take: limit,
+        skip,
+        where: {
+            AND: andCondition,
+        },
         select: {
             id: true,
             name: true,
@@ -21,11 +76,22 @@ const getAllUsers = async () => {
                     avg_rating: true,
                     created_at: true,
                     updated_at: true,
+                    tutorSubjects: { include: { subject: true } },
+                    availabilities: true,
                 },
             },
         },
-        orderBy: { name: "asc" },
+        orderBy: { [sortBy]: sortOrder },
     });
+    return {
+        data: result,
+        meta: {
+            page,
+            limit,
+            total: result.length,
+            totalPages: Math.ceil(result.length / limit),
+        },
+    };
 };
 
 const getUserDetails = async (userId: string) => {
@@ -36,6 +102,22 @@ const getUserDetails = async (userId: string) => {
                 include: {
                     availabilities: true,
                     tutorSubjects: { include: { subject: true } },
+                    reviews: true,
+                    bookings: true,
+                },
+            },
+        },
+    });
+};
+
+const getUserTutorDetails = async (userId: string) => {
+    return await prisma.user.findUniqueOrThrow({
+        where: { id: userId, role: "TUTOR" },
+        include: {
+            tutorProfiles: {
+                include: {
+                    tutorSubjects: { include: { subject: true } },
+                    availabilities: true,
                     reviews: true,
                     bookings: true,
                 },
@@ -70,4 +152,5 @@ export const userService = {
     banUser,
     unbanUser,
     updateUserById,
+    getUserTutorDetails,
 };

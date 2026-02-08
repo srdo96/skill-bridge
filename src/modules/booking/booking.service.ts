@@ -2,9 +2,24 @@ import { BookingStatus, type Booking } from "../../../generated/prisma/client";
 import { prisma } from "../../lib/prisma";
 
 const createBooking = async (payload: Booking) => {
-    console.log("payload", payload);
+    const hourlyRate = await prisma.tutorProfile.findUniqueOrThrow({
+        where: { tutor_profile_id: payload.tutor_profile_id },
+        select: { hourly_rate: true },
+    });
+    const minRate = Number(hourlyRate.hourly_rate) / 60;
+    const endTimeSplit = payload.end_time.split(":");
+    const endTimeMin = Number(endTimeSplit[0]) * 60 + Number(endTimeSplit[1]);
+    const startTimeSplit = payload.start_time.split(":");
+    const startTimeMin =
+        Number(startTimeSplit[0]) * 60 + Number(startTimeSplit[1]);
+    const durationMin = endTimeMin - startTimeMin;
+    const price = minRate * durationMin;
+
     return await prisma.booking.create({
-        data: payload,
+        data: {
+            ...payload,
+            price: price,
+        },
     });
 };
 
