@@ -11,6 +11,7 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
         const status = req.query.status as UserStatus | undefined;
         const role = req.query.role as UserRoles | undefined;
         const tutorProfiles = req.query.tutorProfiles as string | undefined;
+        const isFeatured = req.query.isFeatured as string | undefined;
         const { page, limit, skip, sortBy, sortOrder } =
             paginationSortingHelper(req.query);
         const data = await userService.getAllUsers({
@@ -23,8 +24,8 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
             sortOrder,
             sortBy,
             tutorProfiles,
+            isFeatured,
         });
-        console.log("datas", data);
 
         return sendResponse(res, {
             statusCode: 200,

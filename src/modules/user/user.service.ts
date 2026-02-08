@@ -16,6 +16,7 @@ const getAllUsers = async ({
     sortOrder,
     sortBy,
     tutorProfiles,
+    isFeatured,
 }: {
     search: string | undefined;
     status: string | undefined;
@@ -26,6 +27,7 @@ const getAllUsers = async ({
     sortOrder: string;
     sortBy: string;
     tutorProfiles: string | undefined;
+    isFeatured: string | undefined;
 }) => {
     const andCondition: UserWhereInput[] = [];
     if (search) {
@@ -49,6 +51,13 @@ const getAllUsers = async ({
     if (status) {
         andCondition.push({
             status: status as UserStatus,
+        });
+    }
+    if (isFeatured === "true") {
+        andCondition.push({
+            tutorProfiles: {
+                is_featured: Boolean(isFeatured),
+            },
         });
     }
 
