@@ -17,6 +17,10 @@ const getAllUsers = async ({
     sortBy,
     tutorProfiles,
     isFeatured,
+    minRating,
+    maxRating,
+    minPrice,
+    maxPrice,
 }: {
     search: string | undefined;
     status: string | undefined;
@@ -28,6 +32,10 @@ const getAllUsers = async ({
     sortBy: string;
     tutorProfiles: string | undefined;
     isFeatured: string | undefined;
+    minRating: number | undefined;
+    maxRating: number | undefined;
+    minPrice: number | undefined;
+    maxPrice: number | undefined;
 }) => {
     const andCondition: UserWhereInput[] = [];
     if (search) {
@@ -35,6 +43,20 @@ const getAllUsers = async ({
             OR: [
                 { name: { contains: search, mode: "insensitive" } },
                 { email: { contains: search, mode: "insensitive" } },
+                {
+                    tutorProfiles: {
+                        tutorSubjects: {
+                            some: {
+                                subject: {
+                                    name: {
+                                        contains: search,
+                                        mode: "insensitive",
+                                    },
+                                },
+                            },
+                        },
+                    },
+                },
             ],
         });
     }
@@ -57,6 +79,42 @@ const getAllUsers = async ({
         andCondition.push({
             tutorProfiles: {
                 is_featured: Boolean(isFeatured),
+            },
+        });
+    }
+    if (minRating !== undefined) {
+        andCondition.push({
+            tutorProfiles: {
+                avg_rating: {
+                    gte: minRating,
+                },
+            },
+        });
+    }
+    if (maxRating !== undefined) {
+        andCondition.push({
+            tutorProfiles: {
+                avg_rating: {
+                    lte: maxRating,
+                },
+            },
+        });
+    }
+    if (minPrice !== undefined) {
+        andCondition.push({
+            tutorProfiles: {
+                hourly_rate: {
+                    gte: minPrice,
+                },
+            },
+        });
+    }
+    if (maxPrice !== undefined) {
+        andCondition.push({
+            tutorProfiles: {
+                hourly_rate: {
+                    lte: maxPrice,
+                },
             },
         });
     }

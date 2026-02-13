@@ -48,6 +48,7 @@ const getAllBookings = async (userId?: string) => {
         : undefined;
     return await prisma.booking.findMany({
         ...(where ? { where } : {}),
+        orderBy: { created_at: "desc" },
         include: {
             subject: true,
             tutorProfile: true,

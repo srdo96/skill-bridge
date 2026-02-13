@@ -12,6 +12,7 @@ const createReview = async (
         const body = { ...req.body, student_id: userId };
 
         const data = await reviewService.createReview(body);
+        console.log("data review", data);
         return sendResponse(res, {
             statusCode: 201,
             success: true,

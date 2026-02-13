@@ -12,6 +12,30 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
         const role = req.query.role as UserRoles | undefined;
         const tutorProfiles = req.query.tutorProfiles as string | undefined;
         const isFeatured = req.query.isFeatured as string | undefined;
+        const minRatingRaw = req.query.minRating;
+        const maxRatingRaw = req.query.maxRating;
+        const minPriceRaw = req.query.minPrice;
+        const maxPriceRaw = req.query.maxPrice;
+        const minRating =
+            typeof minRatingRaw === "string" &&
+            !Number.isNaN(Number(minRatingRaw))
+                ? Number(minRatingRaw)
+                : undefined;
+        const maxRating =
+            typeof maxRatingRaw === "string" &&
+            !Number.isNaN(Number(maxRatingRaw))
+                ? Number(maxRatingRaw)
+                : undefined;
+        const minPrice =
+            typeof minPriceRaw === "string" &&
+            !Number.isNaN(Number(minPriceRaw))
+                ? Number(minPriceRaw)
+                : undefined;
+        const maxPrice =
+            typeof maxPriceRaw === "string" &&
+            !Number.isNaN(Number(maxPriceRaw))
+                ? Number(maxPriceRaw)
+                : undefined;
         const { page, limit, skip, sortBy, sortOrder } =
             paginationSortingHelper(req.query);
         const data = await userService.getAllUsers({
@@ -25,6 +49,10 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
             sortBy,
             tutorProfiles,
             isFeatured,
+            minRating,
+            maxRating,
+            minPrice,
+            maxPrice,
         });
 
         return sendResponse(res, {
