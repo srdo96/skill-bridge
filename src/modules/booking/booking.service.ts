@@ -40,21 +40,41 @@ const getBookingsByUserId = async (userId: string) => {
     });
 };
 
-const getAllBookings = async (userId?: string) => {
+const getAllBookings = async (
+    page: number,
+    limit: number,
+    skip: number,
+    userId?: string,
+) => {
     const where = userId
         ? {
               OR: [{ student_id: userId }, { tutor_profile_id: userId }],
           }
         : undefined;
-    return await prisma.booking.findMany({
-        ...(where ? { where } : {}),
-        orderBy: { created_at: "desc" },
-        include: {
-            subject: true,
-            tutorProfile: true,
-            student: true,
-        },
-    });
+
+    const [total, bookings] = await Promise.all([
+        prisma.booking.count({
+            ...(where ? { where } : {}),
+        }),
+        prisma.booking.findMany({
+            ...(where ? { where } : {}),
+            orderBy: { created_at: "desc" },
+            skip,
+            take: limit,
+            include: {
+                subject: true,
+                tutorProfile: true,
+                student: true,
+            },
+        }),
+    ]);
+    return {
+        total,
+        page,
+        limit,
+        bookings,
+        totalPages: Math.ceil(total / limit),
+    };
 };
 
 const getBookingDetails = async (bookingId: string) => {

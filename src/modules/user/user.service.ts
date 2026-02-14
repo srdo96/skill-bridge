@@ -21,6 +21,7 @@ const getAllUsers = async ({
     maxRating,
     minPrice,
     maxPrice,
+    category,
 }: {
     search: string | undefined;
     status: string | undefined;
@@ -36,6 +37,7 @@ const getAllUsers = async ({
     maxRating: number | undefined;
     minPrice: number | undefined;
     maxPrice: number | undefined;
+    category: string | undefined;
 }) => {
     const andCondition: UserWhereInput[] = [];
     if (search) {
@@ -43,6 +45,7 @@ const getAllUsers = async ({
             OR: [
                 { name: { contains: search, mode: "insensitive" } },
                 { email: { contains: search, mode: "insensitive" } },
+
                 {
                     tutorProfiles: {
                         tutorSubjects: {
@@ -114,6 +117,24 @@ const getAllUsers = async ({
             tutorProfiles: {
                 hourly_rate: {
                     lte: maxPrice,
+                },
+            },
+        });
+    }
+    if (category) {
+        andCondition.push({
+            tutorProfiles: {
+                tutorSubjects: {
+                    some: {
+                        subject: {
+                            category: {
+                                name: {
+                                    contains: category,
+                                    mode: "insensitive",
+                                },
+                            },
+                        },
+                    },
                 },
             },
         });

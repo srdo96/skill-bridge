@@ -6,11 +6,13 @@ import { userService } from "./user.service";
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
+        // Parse filters
         const { search } = req.query;
         const searchString = typeof search === "string" ? search : undefined;
         const status = req.query.status as UserStatus | undefined;
         const role = req.query.role as UserRoles | undefined;
         const tutorProfiles = req.query.tutorProfiles as string | undefined;
+        const category = req.query.category as string | undefined;
         const isFeatured = req.query.isFeatured as string | undefined;
         const minRatingRaw = req.query.minRating;
         const maxRatingRaw = req.query.maxRating;
@@ -36,6 +38,7 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
             !Number.isNaN(Number(maxPriceRaw))
                 ? Number(maxPriceRaw)
                 : undefined;
+
         const { page, limit, skip, sortBy, sortOrder } =
             paginationSortingHelper(req.query);
         const data = await userService.getAllUsers({
@@ -53,6 +56,7 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
             maxRating,
             minPrice,
             maxPrice,
+            category,
         });
 
         return sendResponse(res, {

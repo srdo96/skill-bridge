@@ -3,6 +3,7 @@ import { randomUUID } from "node:crypto";
 import { UserRoles } from "../../../generated/prisma/enums";
 import { sendResponse } from "../../lib/responseHandler";
 import type { AuthenticatedRequest } from "../../middlewares/auth";
+import paginationSortingHelper from "../../utils/paginationSortingHelper";
 import { bookingService } from "./booking.service";
 
 const createBooking = async (
@@ -84,7 +85,14 @@ const getAllBookings = async (
         if (req.user.role === UserRoles.TUTOR) {
             userId = req.user.id;
         }
-        const data = await bookingService.getAllBookings(userId);
+        const { page, limit, skip } = paginationSortingHelper(req.query);
+
+        const data = await bookingService.getAllBookings(
+            page,
+            limit,
+            skip,
+            userId,
+        );
         return sendResponse(res, {
             statusCode: 200,
             success: true,
