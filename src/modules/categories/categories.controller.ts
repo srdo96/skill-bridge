@@ -1,5 +1,6 @@
 import type { NextFunction, Request, Response } from "express";
 import { sendResponse } from "../../lib/responseHandler";
+import paginationSortingHelper from "../../utils/paginationSortingHelper";
 import { categoryService } from "./categories.service";
 
 const createCategory = async (
@@ -26,12 +27,18 @@ const getAllCategories = async (
     next: NextFunction,
 ) => {
     try {
-        const data = await categoryService.getAllCategories();
+        const { page, limit, skip } = paginationSortingHelper(req.query);
+        const data = await categoryService.getAllCategories({
+            page,
+            limit,
+            skip,
+        });
         return sendResponse(res, {
             statusCode: 200,
             success: true,
             message: "Get all categories successfully",
-            data,
+            data: data.data,
+            meta: data.meta,
         });
     } catch (error) {
         next(error);
