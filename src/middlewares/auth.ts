@@ -1,6 +1,6 @@
 import { fromNodeHeaders } from "better-auth/node";
 import type { NextFunction, Request, Response } from "express";
-import type { UserRoles } from "../../generated/prisma/enums";
+import { UserStatus, type UserRoles } from "../../generated/prisma/enums";
 import { auth as betterAuth } from "../lib/auth";
 
 declare global {
@@ -11,6 +11,7 @@ declare global {
                 name: string;
                 email: string;
                 role: UserRoles;
+                status: UserStatus;
                 emailVerified: boolean;
             };
         }
@@ -39,6 +40,14 @@ const auth = (...roles: UserRoles[]) => {
             //         message: "Your email is not verified yet!",
             //     });
             // }
+            const userStatus = session.user.status as UserStatus | undefined;
+            if (userStatus === UserStatus.BAN) {
+                return res.status(403).json({
+                    success: false,
+                    message:
+                        "Your account has been banned. Please contact support.",
+                });
+            }
 
             req.user = {
                 id: session.user.id,
@@ -46,6 +55,7 @@ const auth = (...roles: UserRoles[]) => {
                 email: session.user.email,
                 emailVerified: session.user.emailVerified,
                 role: session.user.role as UserRoles,
+                status: userStatus ?? UserStatus.ACTIVE,
             };
             if (roles.length && !roles.includes(req.user.role as UserRoles)) {
                 return res.status(403).json({
