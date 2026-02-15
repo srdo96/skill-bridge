@@ -7,6 +7,9 @@ const envSchema = z.object({
     BETTER_AUTH_SECRET: z.string(),
     BETTER_AUTH_URL: z.string(),
     CORS_ORIGIN: z.string(),
+    ADMIN_NAME: z.string(),
+    ADMIN_EMAIL: z.string(),
+    ADMIN_PASSWORD: z.string(),
 });
 
 const parsedEnv = envSchema.safeParse(process.env);
@@ -23,4 +26,7 @@ export const env = {
     betterAuthSecret: parsedEnv.data.BETTER_AUTH_SECRET,
     betterAuthUrl: parsedEnv.data.BETTER_AUTH_URL,
     corsOrigin: parsedEnv.data.CORS_ORIGIN,
+    adminName: parsedEnv.data.ADMIN_NAME,
+    adminEmail: parsedEnv.data.ADMIN_EMAIL,
+    adminPassword: parsedEnv.data.ADMIN_PASSWORD,
 };
