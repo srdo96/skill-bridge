@@ -6,7 +6,6 @@ import { userService } from "./user.service";
 
 const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
     try {
-        // Parse filters
         const { search } = req.query;
         const searchString = typeof search === "string" ? search : undefined;
         const status = req.query.status as UserStatus | undefined;
@@ -41,6 +40,7 @@ const getAllUsers = async (req: Request, res: Response, next: NextFunction) => {
 
         const { page, limit, skip, sortBy, sortOrder } =
             paginationSortingHelper(req.query);
+
         const data = await userService.getAllUsers({
             search: searchString,
             status,

@@ -140,45 +140,52 @@ const getAllUsers = async ({
         });
     }
 
-    const result = await prisma.user.findMany({
-        take: limit,
-        skip,
-        where: {
-            AND: andCondition,
-        },
-        select: {
-            id: true,
-            name: true,
-            email: true,
-            image: true,
-            role: true,
-            phone: true,
-            status: true,
-            createdAt: true,
-            updatedAt: true,
-            tutorProfiles: {
-                select: {
-                    tutor_profile_id: true,
-                    hourly_rate: true,
-                    year_of_experience: true,
-                    avg_rating: true,
-                    created_at: true,
-                    updated_at: true,
-                    is_featured: true,
-                    tutorSubjects: { include: { subject: true } },
-                    availabilities: true,
+    const whereClause: UserWhereInput = {
+        AND: andCondition,
+    };
+
+    const [result, total] = await Promise.all([
+        prisma.user.findMany({
+            take: limit,
+            skip,
+            where: whereClause,
+            select: {
+                id: true,
+                name: true,
+                email: true,
+                image: true,
+                role: true,
+                phone: true,
+                status: true,
+                createdAt: true,
+                updatedAt: true,
+                tutorProfiles: {
+                    select: {
+                        tutor_profile_id: true,
+                        hourly_rate: true,
+                        year_of_experience: true,
+                        avg_rating: true,
+                        created_at: true,
+                        updated_at: true,
+                        is_featured: true,
+                        tutorSubjects: { include: { subject: true } },
+                        availabilities: true,
+                    },
                 },
             },
-        },
-        orderBy: { [sortBy]: sortOrder },
-    });
+            orderBy: { [sortBy]: sortOrder },
+        }),
+        prisma.user.count({
+            where: whereClause,
+        }),
+    ]);
     return {
         data: result,
         meta: {
             page,
             limit,
-            total: result.length,
-            totalPages: Math.ceil(result.length / limit),
+            total,
+            totalPages: Math.ceil(total / limit),
         },
     };
 };
