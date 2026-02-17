@@ -82,7 +82,10 @@ const getAllBookings = async (
 ) => {
     try {
         let userId = undefined;
-        if (req.user.role === UserRoles.TUTOR) {
+        if (
+            req.user.role === UserRoles.TUTOR ||
+            req.user.role === UserRoles.STUDENT
+        ) {
             userId = req.user.id;
         }
         const { page, limit, skip } = paginationSortingHelper(req.query);

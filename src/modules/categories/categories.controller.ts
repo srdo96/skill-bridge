@@ -33,6 +33,7 @@ const getAllCategories = async (
             limit,
             skip,
         });
+        console.log(data);
         return sendResponse(res, {
             statusCode: 200,
             success: true,
